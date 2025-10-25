@@ -19,7 +19,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-yellow-50 via-orange-100 to-yellow-200 p-4">
-      <Header/>
+      <Header />
       <Card className="w-full mt-20 max-w-md shadow-2xl border-0 rounded-2xl bg-white/90 backdrop-blur-md">
         <CardHeader className="text-center space-y-2">
           <div className="flex justify-center mb-2">
@@ -35,6 +35,43 @@ export default function LoginPage() {
 
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
+            {/* ✅ Role Selection Section */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Select Role</label>
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="user"
+                    defaultChecked
+                    className="text-orange-600 focus:ring-orange-500"
+                  />
+                  <span className="text-gray-700 text-sm">User</span>
+                </label>
+
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="restaurant"
+                    className="text-orange-600 focus:ring-orange-500"
+                  />
+                  <span className="text-gray-700 text-sm">Restaurant</span>
+                </label>
+
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="household_chef"
+                    className="text-orange-600 focus:ring-orange-500"
+                  />
+                  <span className="text-gray-700 text-sm">Household Chef</span>
+                </label>
+              </div>
+            </div>
+
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">Email</label>
               <div className="relative">

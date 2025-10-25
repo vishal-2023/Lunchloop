@@ -35,6 +35,41 @@ export default function SignupPage() {
 
         <CardContent>
           <form onSubmit={handleSignup} className="space-y-4">
+             <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Select Role</label>
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="user"
+                    defaultChecked
+                    className="text-orange-600 focus:ring-orange-500"
+                  />
+                  <span className="text-gray-700 text-sm">User</span>
+                </label>
+
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="restaurant"
+                    className="text-orange-600 focus:ring-orange-500"
+                  />
+                  <span className="text-gray-700 text-sm">Restaurant</span>
+                </label>
+
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="household_chef"
+                    className="text-orange-600 focus:ring-orange-500"
+                  />
+                  <span className="text-gray-700 text-sm">Household Chef</span>
+                </label>
+              </div>
+            </div>
             {/* Full Name */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">Full Name</label>
@@ -114,7 +149,7 @@ export default function SignupPage() {
             </div>
 
             {/* Google Signup */}
-            <Button
+            {/* <Button
               variant="outline"
               className="w-full flex items-center justify-center gap-2 rounded-xl"
             >
@@ -124,7 +159,7 @@ export default function SignupPage() {
                 className="w-5 h-5"
               />
               Sign up with Google
-            </Button>
+            </Button> */}
 
             {/* Already have account */}
             <p className="text-center text-sm text-gray-600 mt-4">

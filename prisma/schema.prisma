@@ -7,4 +7,102 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Example model
+model User {
+  id             String         @id @default(uuid())
+  name           String
+  email          String?        @unique
+  phone          String?        @unique
+  password       String
+  role           Role           @default(USER)
+  createdAt      DateTime       @default(now())
+  subscriptions  Subscription[]
+  orders         Order[]
+  
+  // These are now properly defined
+  referralsSent    Referral[]    @relation("Referrer")
+  referralsReceived Referral[]   @relation("Referred")
+}
+
+model Provider {
+  id             String         @id @default(uuid())
+  name           String
+  email          String?        @unique
+  phone          String?        @unique
+  type           ProviderType   // 'RESTAURANT' or 'HOME_KITCHEN'
+  bio            String?
+  verified       Boolean        @default(false)
+  kitchenPhotos  String[]       // URLs
+  menu           Dish[]
+  orders         Order[]
+  createdAt      DateTime       @default(now())
+  
+  // Added to complete relation with Subscription
+  subscriptions  Subscription[]
+}
+
+model Dish {
+  id           String    @id @default(uuid())
+  name         String
+  description  String
+  image        String
+  price        Float
+  provider     Provider  @relation(fields: [providerId], references: [id])
+  providerId   String
+  isAvailable  Boolean   @default(true)
+}
+
+model Subscription {
+  id         String    @id @default(uuid())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  provider   Provider  @relation(fields: [providerId], references: [id])
+  providerId String
+  planType   PlanType  // WEEKLY / MONTHLY / TRIAL
+  startDate  DateTime
+  endDate    DateTime
+  active     Boolean   @default(true)
+}
+
+model Order {
+  id           String    @id @default(uuid())
+  user         User      @relation(fields: [userId], references: [id])
+  userId       String
+  provider     Provider  @relation(fields: [providerId], references: [id])
+  providerId   String
+  date         DateTime
+  status       OrderStatus
+  isCancelled  Boolean   @default(false)
+}
+
+model Referral {
+  id          String   @id @default(uuid())
+  referredBy  User     @relation("Referrer", fields: [referrerId], references: [id])
+  referrerId  String
+  referred    User     @relation("Referred", fields: [referredId], references: [id])
+  referredId  String
+  createdAt   DateTime @default(now())
+}
+
+enum Role {
+  ADMIN
+  USER
+  PROVIDER
+}
+
+enum ProviderType {
+  RESTAURANT
+  HOME_KITCHEN
+}
+
+enum PlanType {
+  TRIAL
+  WEEKLY
+  MONTHLY
+}
+
+enum OrderStatus {
+  PLACED
+  PREPARING
+  OUT_FOR_DELIVERY
+  DELIVERED
+}
