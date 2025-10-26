@@ -8,36 +8,42 @@ datasource db {
 }
 
 model User {
-  id             String         @id @default(uuid())
-  name           String
-  email          String?        @unique
-  phone          String?        @unique
-  password       String
-  role           Role           @default(USER)
-  createdAt      DateTime       @default(now())
-  subscriptions  Subscription[]
-  orders         Order[]
-  
-  // These are now properly defined
-  referralsSent    Referral[]    @relation("Referrer")
-  referralsReceived Referral[]   @relation("Referred")
+  id               String         @id @default(uuid())
+  name             String
+  email            String?        @unique
+  phone            String?        @unique
+  password         String
+  role             Role           @default(USER)
+  createdAt        DateTime       @default(now())
+
+  subscriptions    Subscription[]
+  orders           Order[]
+  referralsSent    Referral[]     @relation("Referrer")
+  referralsReceived Referral[]    @relation("Referred")
+
+  // Only back-relation, no fields/references
+  provider         Provider?
 }
 
 model Provider {
-  id             String         @id @default(uuid())
-  name           String
-  email          String?        @unique
-  phone          String?        @unique
-  type           ProviderType   // 'RESTAURANT' or 'HOME_KITCHEN'
+  id             String          @id @default(uuid())
+  userId         String          @unique
+  user           User            @relation(fields: [userId], references: [id])
+
+  type           ProviderType    // 'RESTAURANT' or 'HOME_KITCHEN'
+  serviceName    String
   bio            String?
-  verified       Boolean        @default(false)
-  kitchenPhotos  String[]       // URLs
+  verified       Boolean         @default(false)
+  kitchenPhotos  String[]
+  address        String?
+  city           String?
+  pincode        String?
+  latitude       Float?
+  longitude      Float?
   menu           Dish[]
   orders         Order[]
-  createdAt      DateTime       @default(now())
-  
-  // Added to complete relation with Subscription
   subscriptions  Subscription[]
+  createdAt      DateTime        @default(now())
 }
 
 model Dish {
